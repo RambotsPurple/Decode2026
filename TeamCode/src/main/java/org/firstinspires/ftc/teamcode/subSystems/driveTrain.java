@@ -18,12 +18,6 @@ public class driveTrain {
         rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-// DcMotors for Linear slide
-
-
-        // MaybeIntake = hardwareMap.get(DcMotorEx.class, "intake");
-        // Setting the direction for the motor on where to rotate
-
         // Orientation for drivetrain
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight.setDirection(DcMotor.Direction.REVERSE);
