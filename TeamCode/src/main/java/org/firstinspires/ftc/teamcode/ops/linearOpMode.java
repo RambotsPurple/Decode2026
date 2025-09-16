@@ -27,22 +27,28 @@ public class linearOpMode extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-      /*
-        GamePad Map
-        GamePad 1 (Driver)
-          Left JoyStick = lateral, diagonal, forwards and backwards movements
-          Right JoyStick = Rotation of drive train
-        GamePad 2 (Operator)
-          Button A = toggle position of claw to open or closed (We start closed)
-          left stick x = slide extension
-          right stick y = slide abduction
-       */
+            /*
+            GamePad Map
+            GamePad 1 (Driver)
+            Left JoyStick = lateral, diagonal, forwards and backwards movements
+            Right JoyStick = Rotation of drive train
 
+            GamePad 2 (Operator)
+            Button A = toggle position of claw to open or closed (We start closed)
+            left stick x = slide extension
+            right stick y = slide abduction
+            */
+
+            driveTrain.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0);
 
             telemetry.addData("hello world", 0);
+            telemetry.addData("gamepad1 left x", gamepad1.left_stick_x);
+            telemetry.addData("gamepad1 left y", gamepad1.left_stick_y);
+            telemetry.addData("gamepad1 right x", gamepad1.right_stick_x);
             telemetry.update();
 
-        }
-    }
+        } // while
 
-}
+    } // runOpMode
+
+} // linearOpMode
