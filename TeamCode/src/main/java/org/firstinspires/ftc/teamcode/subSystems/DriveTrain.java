@@ -31,6 +31,8 @@ public class DriveTrain {
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         rearLeft.setDirection(DcMotor.Direction.FORWARD);
         rearRight.setDirection(DcMotor.Direction.REVERSE);
+
+        resetAngle();
     } // init
 
     public static void drive(double x, double y, double turn, double direction) {

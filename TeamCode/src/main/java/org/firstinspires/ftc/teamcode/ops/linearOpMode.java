@@ -23,6 +23,8 @@ public class linearOpMode extends LinearOpMode {
         boolean correctPath = false;
         boolean fieldCentric = false;
 
+        double direction = 0;
+
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
@@ -39,12 +41,14 @@ public class linearOpMode extends LinearOpMode {
             right stick y = slide abduction
             */
 
-            DriveTrain.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, DriveTrain.getAngle());
+            direction = DriveTrain.getAngle();
+            DriveTrain.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, direction);
 
             telemetry.addData("hello world", 0);
             telemetry.addData("gamepad1 left x", gamepad1.left_stick_x);
             telemetry.addData("gamepad1 left y", gamepad1.left_stick_y);
             telemetry.addData("gamepad1 right x", gamepad1.right_stick_x);
+            telemetry.addData("direction", direction);
             telemetry.update();
 
         } // while
