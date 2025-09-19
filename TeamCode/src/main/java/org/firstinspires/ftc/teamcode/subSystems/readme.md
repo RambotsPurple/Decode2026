@@ -1,0 +1,11 @@
+# Subsystems
+  - Drivetrain
+      - Mecanum drive
+      - IMU
+  - Intake
+      - Spinners
+  - Shooter
+      - Ramp (angle)
+      - Spinners
+  - Hopper
+      - Spinners
