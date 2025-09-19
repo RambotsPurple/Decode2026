@@ -4,10 +4,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class driveTrain {
+public class DriveTrain {
     private static DcMotorEx frontLeft, frontRight, rearLeft, rearRight ;
 
-    public  driveTrain (HardwareMap hw){
+    public static void init(HardwareMap hw){
         frontLeft = hw.get(DcMotorEx.class, "leftFront");
         frontRight = hw.get(DcMotorEx.class, "rightFront");
         rearLeft = hw.get(DcMotorEx.class, "leftBack");
@@ -23,7 +23,8 @@ public class driveTrain {
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         rearLeft.setDirection(DcMotor.Direction.FORWARD);
         rearRight.setDirection(DcMotor.Direction.REVERSE);
-    }
+    } // init
+
     public static void drive(double x, double y, double turn, double direction){
         // input: theta and power
         // theta is where we want the direction the robot to go
@@ -47,7 +48,7 @@ public class driveTrain {
             frontRightPower /= power - turn;
             rearLeftPower /= power + turn;
             rearRightPower /= power - turn;
-        }
+        } // if
 
         // Power to the wheels
         frontLeft.setPower(frontLeftPower);
@@ -55,5 +56,5 @@ public class driveTrain {
         frontRight.setPower(frontRightPower);
         rearRight.setPower(rearRightPower);
 
-    }
-}
+    } // drive
+} // DriveTrain

@@ -2,9 +2,8 @@ package org.firstinspires.ftc.teamcode.ops;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.subSystems.driveTrain;
+import org.firstinspires.ftc.teamcode.subSystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.subSystems.RobotConfig;
 
 
@@ -16,6 +15,7 @@ public class linearOpMode extends LinearOpMode {
 
         // initializing hardware
         RobotConfig.initialize(hardwareMap);
+        DriveTrain.init(hardwareMap);
 
         waitForStart();
 
@@ -39,7 +39,7 @@ public class linearOpMode extends LinearOpMode {
             right stick y = slide abduction
             */
 
-            driveTrain.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0);
+            DriveTrain.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0);
 
             telemetry.addData("hello world", 0);
             telemetry.addData("gamepad1 left x", gamepad1.left_stick_x);
