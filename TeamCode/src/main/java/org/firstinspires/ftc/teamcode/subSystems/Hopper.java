@@ -18,8 +18,8 @@ public class Hopper {
         rightRotation.setDirection(DcMotor.Direction.REVERSE);
     } // init
 
-    public static void intakePower(double p){
+    public static void hopperPower(double p){
         leftRotation.setPower(p);
         rightRotation.setPower(p);
-    } // HopperPower
+    } // hopperPower
 } // Hopper
