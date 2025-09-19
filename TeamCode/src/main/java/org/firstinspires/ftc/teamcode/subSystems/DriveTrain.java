@@ -3,15 +3,23 @@ package org.firstinspires.ftc.teamcode.subSystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 
 public class DriveTrain {
-    private static DcMotorEx frontLeft, frontRight, rearLeft, rearRight ;
+    private static DcMotorEx frontLeft, frontRight, rearLeft, rearRight;
+    private static IMU imu;
 
-    public static void init(HardwareMap hw){
+    private static double direction;
+    private static double lastAngles;
+
+
+    public static void init(HardwareMap hw) {
         frontLeft = hw.get(DcMotorEx.class, "leftFront");
         frontRight = hw.get(DcMotorEx.class, "rightFront");
         rearLeft = hw.get(DcMotorEx.class, "leftBack");
         rearRight = hw.get(DcMotorEx.class, "rightBack");
+
+        imu = hw.get(IMU.class, "imu");
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -25,7 +33,7 @@ public class DriveTrain {
         rearRight.setDirection(DcMotor.Direction.REVERSE);
     } // init
 
-    public static void drive(double x, double y, double turn, double direction){
+    public static void drive(double x, double y, double turn, double direction) {
         // input: theta and power
         // theta is where we want the direction the robot to go
         // power is (-1) to 1 scale where increasing power will cause the engines to go faster
@@ -57,4 +65,33 @@ public class DriveTrain {
         rearRight.setPower(rearRightPower);
 
     } // drive
+
+    public static void resetAngle() {
+        lastAngles = imu.getRobotYawPitchRollAngles().getYaw();
+
+        direction = 0;
+    }
+
+    public static double getAngle() {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+        double angles = imu.getRobotYawPitchRollAngles().getYaw();
+
+        double deltaAngle = angles - lastAngles;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        direction += deltaAngle;
+
+        lastAngles = angles;
+
+        return direction;
+    }
+
 } // DriveTrain
