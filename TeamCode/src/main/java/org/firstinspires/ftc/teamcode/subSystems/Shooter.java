@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Shooter {
+
+    // TODO check motorex vs motor
     private static DcMotorEx leftShooter, rightShooter;
     // make ramp motor or servo
 
