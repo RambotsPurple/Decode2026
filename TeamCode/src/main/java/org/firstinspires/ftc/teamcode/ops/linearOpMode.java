@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.ops;
+package org.firstinspires.ftc.teamcode.Ops;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.subSystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.subSystems.RobotConfig;
+import org.firstinspires.ftc.teamcode.Subsytem.DriveTrain;
+import org.firstinspires.ftc.teamcode.RobotConfig;
 
 
 @TeleOp(name = "RambotsPurpleTeleOp")
