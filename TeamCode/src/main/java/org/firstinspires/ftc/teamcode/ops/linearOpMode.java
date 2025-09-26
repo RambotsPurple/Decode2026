@@ -15,7 +15,7 @@ public class linearOpMode extends LinearOpMode {
 
         // initializing hardware
         RobotConfig.initialize(hardwareMap);
-        DriveTrain.init(hardwareMap);
+        DriveTrain driveTrain = new DriveTrain(hardwareMap);
 
         waitForStart();
 
@@ -42,7 +42,7 @@ public class linearOpMode extends LinearOpMode {
             */
 
             direction = DriveTrain.getAngle();
-            DriveTrain.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, direction);
+            driveTrain.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, direction);
 
             telemetry.addData("hello world", 0);
             telemetry.addData("gamepad1 left x", gamepad1.left_stick_x);

@@ -13,7 +13,7 @@ public class DriveTrain {
     private static double lastAngles;
 
 
-    public static void init(HardwareMap hw) {
+    public DriveTrain (HardwareMap hw) {
         frontLeft = hw.get(DcMotorEx.class, "leftFront");
         frontRight = hw.get(DcMotorEx.class, "rightFront");
         rearLeft
@@ -36,7 +36,7 @@ public class DriveTrain {
         resetAngle();
     } // init
 
-    public static void drive(double x, double y, double turn, double direction) {
+    public void drive(double x, double y, double turn, double direction) {
         // input: theta and power
         // theta is where we want the direction the robot to go
         // power is (-1) to 1 scale where increasing power will cause the engines to go faster
