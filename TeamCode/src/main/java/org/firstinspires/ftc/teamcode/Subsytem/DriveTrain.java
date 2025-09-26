@@ -5,12 +5,13 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
-public class DriveTrain {
-    private static DcMotorEx frontLeft, frontRight, rearLeft, rearRight;
-    private static IMU imu;
+import com.arcrobotics.ftclib.command.SubsystemBase;
 
-    private static double direction;
-    private static double lastAngles;
+public class DriveTrain extends SubsystemBase{
+    private DcMotorEx frontLeft, frontRight, rearLeft, rearRight;
+    private IMU imu;
+    private double direction;
+    private double lastAngles;
 
 
     public DriveTrain (HardwareMap hw) {
