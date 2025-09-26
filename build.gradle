@@ -25,5 +25,5 @@ allprojects {
 }
 
 repositories {
-    mavenCentral()
+    mavenCentral() // for ftclib + other stuff?
 }

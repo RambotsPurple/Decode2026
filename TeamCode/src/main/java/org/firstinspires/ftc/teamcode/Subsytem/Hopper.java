@@ -4,12 +4,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Hopper {
+import com.arcrobotics.ftclib.command.SubsystemBase;
+
+public class Hopper extends SubsystemBase{
 
     // TODO check motorex vs motor
-    private static DcMotorEx leftRotation, rightRotation;
+    private DcMotorEx leftRotation, rightRotation;
 
-    public static void init(HardwareMap hw){
+    public Hopper(HardwareMap hw){
         leftRotation = hw.get(DcMotorEx.class, "lHopper");
         rightRotation = hw.get(DcMotorEx.class, "rHopper");
 
@@ -18,7 +20,7 @@ public class Hopper {
         rightRotation.setDirection(DcMotor.Direction.REVERSE);
     } // init
 
-    public static void hopperPower(double p){
+    public void hopperPower(double p){
         leftRotation.setPower(p);
         rightRotation.setPower(p);
     } // hopperPower
