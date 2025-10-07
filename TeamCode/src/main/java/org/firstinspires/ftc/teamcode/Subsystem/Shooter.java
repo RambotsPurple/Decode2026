@@ -5,23 +5,41 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 public class Shooter extends SubsystemBase{
 
     // TODO check motorex vs motor
-    private DcMotorEx leftShooter, rightShooter;
+    private DcMotorEx shooter;
     // make ramp motor or servo
 
-    public Shooter(HardwareMap hw){
-        leftShooter = hw.get(DcMotorEx.class, "lShoot");
-        rightShooter = hw.get(DcMotorEx.class, "rShoot");
+    public Shooter(HardwareMap hw) {
+        shooter = hw.get(DcMotorEx.class, "lShoot");
 
         // Orientation for shooter
-        leftShooter.setDirection(DcMotor.Direction.FORWARD);
-        rightShooter.setDirection(DcMotor.Direction.REVERSE);
+        shooter.setDirection(DcMotor.Direction.FORWARD);
     } // init
 
-    public void shooterPower(double p){
-        leftShooter.setPower(p);
-        rightShooter.setPower(p);
+    public void setPower(double p) {
+        shooter.setPower(p);
     } // shoot
+
+    // set RPM of motor
+    public void setRPM(int RPM) {
+        shooter.setVelocity(RPM * 6, AngleUnit.DEGREES);
+    }
+
+    public double getRPM() {
+        return shooter.getVelocity(AngleUnit.DEGREES) / 6;
+    }
+
+    public void setTargetPosition(int position) {
+        shooter.setTargetPosition(position);
+    }
+
+    public int getTargetPosition() {
+        return shooter.getTargetPosition();
+    }
+
 } // Shooter

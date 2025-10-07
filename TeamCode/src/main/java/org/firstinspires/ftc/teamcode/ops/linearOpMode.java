@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.ops;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Subsystem.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystem.*;
 import org.firstinspires.ftc.teamcode.RobotConfig;
 
 
@@ -16,6 +16,8 @@ public class linearOpMode extends LinearOpMode {
         // initializing hardware
         RobotConfig.initialize(hardwareMap);
         DriveTrain driveTrain = new DriveTrain(hardwareMap);
+        Shooter shooter = new Shooter(hardwareMap);
+        boolean prevAStatus = false;
 
         waitForStart();
 
@@ -43,6 +45,16 @@ public class linearOpMode extends LinearOpMode {
 
             direction = driveTrain.getAngle();
             driveTrain.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, direction);
+
+            // shooter
+            shooter.setTargetPosition(shooter.getTargetPosition() + 20000);
+
+            if (gamepad1.a != prevAStatus) {
+                if (gamepad1.a) shooter.setRPM(2000);
+                else shooter.setRPM(0);
+            } // if
+
+            prevAStatus = gamepad1.a;
 
             telemetry.addData("hello world", 0);
             telemetry.addData("gamepad1 left x", gamepad1.left_stick_x);
