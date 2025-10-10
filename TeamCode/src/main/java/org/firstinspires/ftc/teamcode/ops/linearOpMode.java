@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Subsystem.*;
-import org.firstinspires.ftc.teamcode.RobotConfig;
 
 
 @TeleOp(name = "RambotsPurpleTeleOp")
@@ -14,7 +13,6 @@ public class linearOpMode extends LinearOpMode {
     public void runOpMode() {
 
         // initializing hardware
-        RobotConfig.initialize(hardwareMap);
         DriveTrain driveTrain = new DriveTrain(hardwareMap);
         Shooter shooter = new Shooter(hardwareMap);
         boolean prevAStatus = false;
