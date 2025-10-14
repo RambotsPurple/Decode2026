@@ -18,6 +18,7 @@ public class Shooter extends SubsystemBase{
 
     public Shooter(HardwareMap hw) {
         shooter = hw.get(DcMotorEx.class, "lShoot");
+        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Orientation for shooter
         shooter.setDirection(DcMotor.Direction.FORWARD);

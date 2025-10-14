@@ -17,8 +17,7 @@ public class DriveTrain extends SubsystemBase{
     public DriveTrain (HardwareMap hw) {
         frontLeft = hw.get(DcMotorEx.class, "leftFront");
         frontRight = hw.get(DcMotorEx.class, "rightFront");
-        rearLeft
-                = hw.get(DcMotorEx.class, "leftBack");
+        rearLeft = hw.get(DcMotorEx.class, "leftBack");
         rearRight = hw.get(DcMotorEx.class, "rightBack");
 
         imu = hw.get(IMU.class, "imu");
