@@ -50,7 +50,7 @@ public class linearOpMode extends LinearOpMode {
             driveTrain.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, direction);
 
             // shooter
-            shooter.setTargetPosition(shooter.getTargetPosition() + 20000);
+            shooter.setTargetPosition(20000);
 
             if (gamepad1.a != prevAStatus) {
                 if (gamepad1.a) shooter.setRPM(2000);
@@ -63,7 +63,8 @@ public class linearOpMode extends LinearOpMode {
                 shooter.setRPM(2000);
             }
 
-
+//            currentTime = System.nanoTime();
+//            lastTime = currentTime;
 
             telemetry.addData("hello world", 0);
             telemetry.addData("gamepad1 left x", gamepad1.left_stick_x);
@@ -78,5 +79,7 @@ public class linearOpMode extends LinearOpMode {
         } // while
 
     } // runOpMode
+
+
 
 } // linearOpMode
