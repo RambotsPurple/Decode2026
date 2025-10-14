@@ -14,6 +14,8 @@ public class Shooter extends SubsystemBase{
     private DcMotorEx shooter;
     // make ramp motor or servo
 
+    private int lastPos = 0;
+
     public Shooter(HardwareMap hw) {
         shooter = hw.get(DcMotorEx.class, "lShoot");
 
@@ -41,5 +43,10 @@ public class Shooter extends SubsystemBase{
     public int getTargetPosition() {
         return shooter.getTargetPosition();
     }
+
+    public int getCurrentPosition() {
+        return shooter.getCurrentPosition();
+    }
+
 
 } // Shooter

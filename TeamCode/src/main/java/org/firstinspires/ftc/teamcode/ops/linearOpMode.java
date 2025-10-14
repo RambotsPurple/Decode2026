@@ -25,6 +25,11 @@ public class linearOpMode extends LinearOpMode {
 
         double direction = 0;
 
+        // for calculating motor speed of shooter
+        int lastPos = 0;
+        long lastTime = 0;
+        long currentTime = 0;
+
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
@@ -50,9 +55,15 @@ public class linearOpMode extends LinearOpMode {
             if (gamepad1.a != prevAStatus) {
                 if (gamepad1.a) shooter.setRPM(2000);
                 else shooter.setRPM(0);
+
+                prevAStatus = gamepad1.a;
             } // if
 
-            prevAStatus = gamepad1.a;
+            if (gamepad1.b) {
+                shooter.setRPM(2000);
+            }
+
+
 
             telemetry.addData("hello world", 0);
             telemetry.addData("gamepad1 left x", gamepad1.left_stick_x);
@@ -60,6 +71,8 @@ public class linearOpMode extends LinearOpMode {
             telemetry.addData("gamepad1 right x", gamepad1.right_stick_x);
             telemetry.addData("direction", direction);
             telemetry.addData("shooter RPM", shooter.getRPM());
+            telemetry.addData("shooter position:", shooter.getCurrentPosition());
+            telemetry.addData("shooter target pos: ", shooter.getTargetPosition());
             telemetry.update();
 
         } // while
