@@ -9,19 +9,17 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 public class Intake extends SubsystemBase{
 
     // TODO check motorex vs motor
-    private DcMotorEx leftIntake, rightIntake;
+    private DcMotorEx leftIntake;
 
     public Intake (HardwareMap hw){
-        leftIntake = hw.get(DcMotorEx.class, "lIntake");
-        rightIntake = hw.get(DcMotorEx.class, "rIntake");
+        leftIntake = hw.get(DcMotorEx.class, "Intake");
+
 
         // Orientation for intake
         leftIntake.setDirection(DcMotor.Direction.FORWARD);
-        rightIntake.setDirection(DcMotor.Direction.REVERSE);
     } // init
 
     public void intakePower(double p){
         leftIntake.setPower(p);
-        rightIntake.setPower(p);
     } // intakePower
 } // Intake
