@@ -15,6 +15,7 @@ public class linearOpMode extends LinearOpMode {
         // initializing hardware
         DriveTrain driveTrain = new DriveTrain(hardwareMap);
         Shooter shooter = new Shooter(hardwareMap);
+        Intake intake = new Intake(hardwareMap);
         boolean prevAStatus = false;
 
         waitForStart();
@@ -53,14 +54,20 @@ public class linearOpMode extends LinearOpMode {
             shooter.setTargetPosition(20000);
 
             if (gamepad1.a != prevAStatus) {
-                if (gamepad1.a) shooter.setRPM(2000);
+                if (gamepad1.a) shooter.setRPM(6000);
                 else shooter.setRPM(0);
 
                 prevAStatus = gamepad1.a;
             } // if
 
             if (gamepad1.b) {
-                shooter.setRPM(2000);
+                shooter.setRPM(6000);
+            }
+
+            if(gamepad2.a){
+                intake.intakePower(1.0);
+            }else if(gamepad2.b){
+                intake.intakePower(0.0);
             }
 
 //            currentTime = System.nanoTime();
