@@ -20,7 +20,8 @@ public class Intake extends SubsystemBase{
 
     } // init
 
-    public void intakePower(double p){
+    public void setPower(double p) {
         intake.setPower(p);
     } // intakePower
+
 } // Intake

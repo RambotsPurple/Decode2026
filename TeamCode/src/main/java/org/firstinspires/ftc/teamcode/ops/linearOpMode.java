@@ -17,6 +17,9 @@ public class linearOpMode extends LinearOpMode {
         Shooter shooter = new Shooter(hardwareMap);
         Intake intake = new Intake(hardwareMap);
         boolean prevAStatus = false;
+        boolean isShooterOn = false;
+        boolean prevBStatus = false;
+        boolean isIntakeOn = false;
 
         waitForStart();
 
@@ -42,9 +45,8 @@ public class linearOpMode extends LinearOpMode {
             Right JoyStick = Rotation of drive train
 
             GamePad 2 (Operator)
-            Button A = toggle position of claw to open or closed (We start closed)
-            left stick x = slide extension
-            right stick y = slide abduction
+            Button A = toggle shooter flywheel on/off
+            Button B = toggle intake on/off
             */
 
             direction = driveTrain.getAngle();
@@ -53,25 +55,30 @@ public class linearOpMode extends LinearOpMode {
             // shooter
             shooter.setTargetPosition(20000);
 
-            if (gamepad1.a != prevAStatus) {
-                if (gamepad1.a) shooter.setRPM(6000);
-                else shooter.setRPM(0);
+            // toggle for shooter power on gamepad2.a
+            if (gamepad2.a != prevAStatus) {
+                if (!gamepad2.a) {
+                    isShooterOn = !isShooterOn;
 
-                prevAStatus = gamepad1.a;
+                    if (isShooterOn) shooter.setRPM(2000);
+                    else shooter.setRPM(0);
+                } // if
+                prevAStatus = gamepad2.a;
             } // if
 
-            if (gamepad1.b) {
-                shooter.setRPM(6000);
-            }
+            // toggle for intake power on gamepad2.b
+            if (gamepad2.b != prevBStatus) {
+                if (!gamepad2.b) {
+                    isIntakeOn = !isIntakeOn;
 
-            if(gamepad2.a){
-                intake.intakePower(1.0);
-            }else if(gamepad2.b){
-                intake.intakePower(0.0);
-            }
+                    if (isIntakeOn) intake.setPower(1.0);
+                    else intake.setPower(0);
+                } // if
+                prevBStatus = gamepad2.b;
+            } // if
 
-//            currentTime = System.nanoTime();
-//            lastTime = currentTime;
+//          currentTime = System.nanoTime();
+//          lastTime = currentTime;
 
             telemetry.addData("hello world", 0);
             telemetry.addData("gamepad1 left x", gamepad1.left_stick_x);
