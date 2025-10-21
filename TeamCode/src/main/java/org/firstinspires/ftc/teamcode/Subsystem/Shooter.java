@@ -38,6 +38,10 @@ public class Shooter extends SubsystemBase{
         return shooter.getVelocity(AngleUnit.DEGREES) / 6;
     }
 
+    public double getTPS() {
+        return shooter.getVelocity();
+    }
+
     public void setTargetPosition(int position) {
         shooter.setTargetPosition(position);
     }
@@ -48,6 +52,16 @@ public class Shooter extends SubsystemBase{
 
     public int getCurrentPosition() {
         return shooter.getCurrentPosition();
+    }
+
+    // get RPM by comparing current encoder position to last encoder position
+    public double getRPM(long currentTime, long lastTime) {
+        int currentPos = getCurrentPosition();
+        int deltaPos = currentPos - lastPos;
+
+        lastPos = currentPos;
+
+        return (double)deltaPos / (currentTime - lastTime);
     }
 
 
