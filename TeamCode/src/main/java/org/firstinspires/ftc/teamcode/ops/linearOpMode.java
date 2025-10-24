@@ -23,6 +23,8 @@ public class linearOpMode extends LinearOpMode {
         boolean prevBStatus = false;
         boolean isIntakeOn = false;
         boolean prevXStatus = false;
+        boolean presYStatus = false;
+        boolean isLauncherOn = false;
         boolean isTransferOn = false;
         boolean correctPath = false;
 
@@ -31,7 +33,8 @@ public class linearOpMode extends LinearOpMode {
         double direction = 0;
         double Turn  = 0;
         double targetDirection = 0;
-
+        //RPM variable
+        int velocity = 6000;
         waitForStart();
 
 
@@ -42,6 +45,7 @@ public class linearOpMode extends LinearOpMode {
         int lastPos = 0;
         long lastTime = 0;
         long currentTime = 0;
+
         ElapsedTime timer = new ElapsedTime();
 
         if (isStopRequested()) return;
@@ -66,14 +70,14 @@ public class linearOpMode extends LinearOpMode {
                 targetDirection = direction;
             }
 
-            //@TODO might need to tuen the denom for less aggressive auto correct
+            //@TODO might need to tune the denom for less aggressive auto correct
             Turn = ((driveTrain.getAngle() - targetDirection) / 40) + gamepad1.right_stick_x;
 
             driveTrain.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, Turn, direction);
 
 
             // shooter
-            shooter.setTargetPosition(20000);
+//            shooter.setTargetPosition(20000);
 
             // toggle fo
             // r shooter power on gamepad2.a
@@ -81,7 +85,9 @@ public class linearOpMode extends LinearOpMode {
                 if (!gamepad2.a) {
                     isShooterOn = !isShooterOn;
 
+//                    if (isShooterOn) shooter.setPower(shooter.setVelocityPID(velocity));
                     if (isShooterOn) shooter.setPower(1);
+
                     else shooter.setPower(0);
                 } // if
                 prevAStatus = gamepad2.a;
@@ -118,6 +124,20 @@ public class linearOpMode extends LinearOpMode {
                 prevXStatus = gamepad2.x;
             } // if
 
+            if (gamepad2.y != presYStatus) {
+                if (!gamepad2.y) {
+                    isLauncherOn = !isLauncherOn;
+
+                    if (isLauncherOn){
+                        shooter.servoUp();
+                    }
+                    else{
+                        shooter.servoDown();
+                    }
+                } // if
+                presYStatus = gamepad2.y;
+            } // if
+
 //          currentTime = System.nanoTime();
 //          lastTime = currentTime;
 
@@ -138,6 +158,7 @@ public class linearOpMode extends LinearOpMode {
             telemetry.addLine("Gamepade 1/Driver\nLeft JoyStick = lateral, diagonal, forwards and backwards movements\n" +
                     "            Right JoyStick = Rotation of drive train\n" +
                     "            right bumper turn on auto correction");
+//
 
             telemetry.update();
 
