@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystem;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -16,7 +17,7 @@ public class Intake extends SubsystemBase{
 
 
         // Orientation for intake
-        intake.setDirection(DcMotor.Direction.FORWARD);
+        intake.setDirection(DcMotor.Direction.REVERSE);
 
     } // init
 

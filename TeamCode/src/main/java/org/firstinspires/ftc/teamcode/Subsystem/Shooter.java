@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase{
         shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Orientation for shooter
-        shooter.setDirection(DcMotor.Direction.FORWARD);
+        shooter.setDirection(DcMotor.Direction.REVERSE);
     } // init
 
     public void setPower(double p) {

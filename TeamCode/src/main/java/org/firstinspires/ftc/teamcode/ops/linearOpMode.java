@@ -16,18 +16,26 @@ public class linearOpMode extends LinearOpMode {
         DriveTrain driveTrain = new DriveTrain(hardwareMap);
         Shooter shooter = new Shooter(hardwareMap);
         Intake intake = new Intake(hardwareMap);
+        Transfer transfer = new Transfer(hardwareMap);
         boolean prevAStatus = false;
         boolean isShooterOn = false;
         boolean prevBStatus = false;
         boolean isIntakeOn = false;
+        boolean prevXStatus = false;
+        boolean isTransferOn = false;
+        boolean correctPath = false;
+
+        boolean intakeReleased = true;
+
+        double direction = 0;
+        double Turn  = 0;
+        double targetDirection = 0;
 
         waitForStart();
 
-        boolean intakeReleased = true;
-        boolean correctPath = false;
-        boolean fieldCentric = false;
 
-        double direction = 0;
+
+
 
         // for calculating motor speed of shooter
         int lastPos = 0;
@@ -43,25 +51,36 @@ public class linearOpMode extends LinearOpMode {
             GamePad 1 (Driver)
             Left JoyStick = lateral, diagonal, forwards and backwards movements
             Right JoyStick = Rotation of drive train
+            right bumper turn on auto correction
 
             GamePad 2 (Operator)
             Button A = toggle shooter flywheel on/off
             Button B = toggle intake on/off
+            Button X = toggle transfer on/off
             */
-
             direction = driveTrain.getAngle();
-            driveTrain.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, direction);
+
+            if(gamepad1.right_stick_x != 0 || gamepad1.right_bumper){
+                targetDirection = direction;
+            }
+
+            //@TODO might need to tuen the denom for less aggressive auto correct
+            Turn = ((driveTrain.getAngle() - targetDirection) / 40) + gamepad1.right_stick_x;
+
+            driveTrain.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, Turn, direction);
+
 
             // shooter
             shooter.setTargetPosition(20000);
 
-            // toggle for shooter power on gamepad2.a
+            // toggle fo
+            // r shooter power on gamepad2.a
             if (gamepad2.a != prevAStatus) {
                 if (!gamepad2.a) {
                     isShooterOn = !isShooterOn;
 
-                    if (isShooterOn) shooter.setRPM(2000);
-                    else shooter.setRPM(0);
+                    if (isShooterOn) shooter.setPower(1);
+                    else shooter.setPower(0);
                 } // if
                 prevAStatus = gamepad2.a;
             } // if
@@ -71,10 +90,30 @@ public class linearOpMode extends LinearOpMode {
                 if (!gamepad2.b) {
                     isIntakeOn = !isIntakeOn;
 
-                    if (isIntakeOn) intake.setPower(1.0);
-                    else intake.setPower(0);
+                    if (isIntakeOn){
+
+                        intake.setPower(1);
+                    }
+                    else{
+
+                        intake.setPower(0);
+                    }
                 } // if
                 prevBStatus = gamepad2.b;
+            } // if
+
+            if (gamepad2.x != prevXStatus) {
+                if (!gamepad2.x) {
+                    isTransferOn = !isTransferOn;
+
+                    if (isTransferOn){
+                        transfer.run();
+                    }
+                    else{
+                        transfer.stop();
+                    }
+                } // if
+                prevXStatus = gamepad2.x;
             } // if
 
 //          currentTime = System.nanoTime();

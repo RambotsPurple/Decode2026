@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 
@@ -14,6 +16,7 @@ public class DriveTrain extends SubsystemBase{
     private double lastAngles;
 
 
+
     public DriveTrain (HardwareMap hw) {
         frontLeft = hw.get(DcMotorEx.class, "leftFront");
         frontRight = hw.get(DcMotorEx.class, "rightFront");
@@ -21,6 +24,13 @@ public class DriveTrain extends SubsystemBase{
         rearRight = hw.get(DcMotorEx.class, "rightBack");
 
         imu = hw.get(IMU.class, "imu");
+
+        imu.initialize(
+                new IMU.Parameters(new RevHubOrientationOnRobot(
+                        RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
+                        RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
+                ))
+        );
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -74,6 +84,8 @@ public class DriveTrain extends SubsystemBase{
 
         direction = 0;
     }
+
+
 
     public double getAngle() {
         // We experimentally determined the Z axis is the axis we want to use for heading angle.
