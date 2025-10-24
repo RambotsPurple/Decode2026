@@ -129,6 +129,14 @@ public class linearOpMode extends LinearOpMode {
             telemetry.addData("shooter TPS to RPM", shooter.getTPS() / 28.0 * 6.0);
             telemetry.addData("shooter position:", shooter.getCurrentPosition());
             telemetry.addData("shooter target pos: ", shooter.getTargetPosition());
+            telemetry.addLine("Gamepad 2/Operator\n " +
+                    "Button A = toggle shooter flywheel on/off\n" +
+                    "            Button B = toggle intake on/off\n" +
+                    "            Button X = toggle transfer on/off");
+            telemetry.addLine("Gamepade 1/Driver\nLeft JoyStick = lateral, diagonal, forwards and backwards movements\n" +
+                    "            Right JoyStick = Rotation of drive train\n" +
+                    "            right bumper turn on auto correction");
+
             telemetry.update();
 
         } // while
