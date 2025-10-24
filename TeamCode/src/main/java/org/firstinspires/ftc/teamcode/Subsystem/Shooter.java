@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -64,5 +65,37 @@ public class Shooter extends SubsystemBase{
         return (double)deltaPos / (currentTime - lastTime);
     }
 
+    public void setVelocityPID(ElapsedTime timer){
+        double Kp = 0;
+        double Ki = 0;
+        double Kd = 0;
+        double targetRPM = 6000;
+        double lastError = 0;
+        double error;
+        double derivative;
+        double integralSum = 0;
+        double out;
+        boolean setPointIsNotReached = true;
+
+        while(getRPM() != targetRPM) {
+            double encoderPosition = getRPM();
+            error = targetRPM - encoderPosition;
+
+            // rate of change of the error
+            derivative = (error - lastError) / timer.seconds();
+
+            // sum of all error over time
+            integralSum += (error * timer.seconds());
+
+            out = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
+
+            setPower(out);
+
+            lastError = error;
+
+            // reset the timer for next time
+            timer.reset();
+        }
+    }
 
 } // Shooter
