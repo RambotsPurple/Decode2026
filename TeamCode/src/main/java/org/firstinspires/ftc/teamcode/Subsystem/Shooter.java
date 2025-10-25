@@ -16,7 +16,13 @@ public class Shooter extends SubsystemBase{
     // TODO check motorex vs motor
     private DcMotorEx shooter;
     // make ramp motor or servo
-    private Servo launcher;
+    private Servo  launcher;
+
+    private double Kp = 0.001, Ki = 0, Kd = 0; // tune these
+
+    private double integralSum = 0;
+    private double lastError = 0;
+    private ElapsedTime timer = new ElapsedTime();
 
     private int lastPos = 0;
 
@@ -29,6 +35,7 @@ public class Shooter extends SubsystemBase{
         shooter.setDirection(DcMotor.Direction.REVERSE);
 
         launcher = hw.get(Servo.class,"launcher");
+        launcher.setDirection(Servo.Direction.REVERSE);
     } // init
 
     public void setPower(double p) {
@@ -72,46 +79,36 @@ public class Shooter extends SubsystemBase{
         return (double)deltaPos / (currentTime - lastTime);
     }
 
-    public double setVelocityPID(int targetRpm){
-        //@TODO tune the PID values and test the pid it's self
-        double Kp = 1;
-        double Ki =1;
-        double Kd = 1;
-        int PPR = 28;
-        //in ticks per second
-        double targetTick = (targetRpm*PPR)/60;
-        double error;
-        double derivative;
-        double integralSum = 0;
-        double out = 0;
-        double lastError = 0;
+    public void setVelocityPID(int targetRpm){
+        int PPR = 28; // pulses per revolution
+        double targetTicksPerSec = (targetRpm * PPR) / 60.0;
 
-        ElapsedTime timer = new ElapsedTime();
+        double currentVelocity = shooter.getVelocity(); // in ticks/sec
+        double error = targetTicksPerSec - currentVelocity;
+        double deltaTime = timer.seconds();
 
+        // integral and derivative
+        integralSum += error * deltaTime;
+        double derivative = (error - lastError) / deltaTime;
 
-        while(shooter.getVelocity() !=targetTick) {
-            error = targetTick - shooter.getVelocity();
+        // PID output
+        double out = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
 
-            // rate of change of the error
-            derivative = (error - lastError) / timer.seconds();
+        // clip output to motor power range
+        out = Math.max(-1, Math.min(1, out));
 
-            // sum of all error over time
-            integralSum += (error * timer.seconds());
+        // apply power
+        shooter.setPower(out);
 
-            out = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
-            
-            lastError = error;
-
-            // reset the timer for next time
-            timer.reset();
-        }
-        return out;
+        // prepare for next cycle
+        lastError = error;
+        timer.reset();
     }//end of setVelocityPID
 
     public void servoUp(){
-        launcher.setPosition(0);
+        launcher.setPosition(1.0);
     }public void servoDown(){
-        launcher.setPosition(1);
+        launcher.setPosition(0.0);
     }
 
 } // Shooter

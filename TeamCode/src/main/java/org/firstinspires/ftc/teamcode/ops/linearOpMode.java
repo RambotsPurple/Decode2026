@@ -71,9 +71,9 @@ public class linearOpMode extends LinearOpMode {
             }
 
             //@TODO might need to tune the denom for less aggressive auto correct
-            Turn = ((driveTrain.getAngle() - targetDirection) / 40) + gamepad1.right_stick_x;
+//            Turn = ((driveTrain.getAngle() - targetDirection) / 40) + gamepad1.right_stick_x;
 
-            driveTrain.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, Turn, direction);
+            driveTrain.drive(-gamepad1.left_stick_x*1.1, gamepad1.left_stick_y, gamepad1.right_stick_x, direction);
 
 
             // shooter
@@ -86,7 +86,7 @@ public class linearOpMode extends LinearOpMode {
                     isShooterOn = !isShooterOn;
 
 //                    if (isShooterOn) shooter.setPower(shooter.setVelocityPID(velocity));
-                    if (isShooterOn) shooter.setPower(1);
+                    if (isShooterOn) shooter.setVelocityPID(velocity);
 
                     else shooter.setPower(0);
                 } // if
@@ -158,7 +158,8 @@ public class linearOpMode extends LinearOpMode {
             telemetry.addLine("Gamepade 1/Driver\nLeft JoyStick = lateral, diagonal, forwards and backwards movements\n" +
                     "            Right JoyStick = Rotation of drive train\n" +
                     "            right bumper turn on auto correction");
-//
+            telemetry.addData("Y", presYStatus);
+telemetry.addData("Status", isLauncherOn);
 
             telemetry.update();
 

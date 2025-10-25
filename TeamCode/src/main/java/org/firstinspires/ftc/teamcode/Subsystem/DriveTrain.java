@@ -9,6 +9,8 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 public class DriveTrain extends SubsystemBase{
     private DcMotorEx frontLeft, frontRight, rearLeft, rearRight;
     private IMU imu;
@@ -46,42 +48,46 @@ public class DriveTrain extends SubsystemBase{
         resetAngle();
     } // init
 
-    public void drive(double x, double y, double turn, double direction) {
-        // input: theta and power
-        // theta is where we want the direction the robot to go
-        // power is (-1) to 1 scale where increasing power will cause the engines to go faster
-        double theta = Math.atan2(y, x) - Math.toRadians(direction);
-        double power = Math.hypot(x, y);
-        double sin = Math.sin(theta - Math.PI / 4);
-        double cos = Math.cos(theta - Math.PI / 4);
-        // max variable allows to use the motors at its max power with out disabling it
-        double max = Math.abs(Math.max(Math.abs(sin) + turn, Math.abs(cos) + turn));
-        max = Math.max(max, 1);
+    public void drive(double x, double y, double turn, double heading) {
 
-        double frontLeftPower = power * cos / max + turn;
-        double frontRightPower = power * sin / max - turn;
-        double rearLeftPower = power * sin / max + turn;
-        double rearRightPower = power * cos / max - turn;
 
-        // Prevents the motors exceeding max power thus motors will not seize and act sporadically
-        if ((power + Math.abs(turn)) > 1) {
-            frontLeftPower /= power + turn;
-            frontRightPower /= power - turn;
-            rearLeftPower /= power + turn;
-            rearRightPower /= power - turn;
-        } // if
 
-        // Power to the wheels
+        // Corrected field-centric math (if you use IMU)
+        double rotatedX = x * Math.cos(heading) - y * Math.sin(heading);
+        double rotatedY = x * Math.sin(heading) + y * Math.cos(heading);
+
+        // Calculate raw motor powers
+        double frontLeftPower = rotatedY + rotatedX + turn;
+        double frontRightPower = rotatedY - rotatedX - turn;
+        double rearLeftPower = rotatedY - rotatedX + turn;
+        double rearRightPower = rotatedY + rotatedX - turn;
+
+        // Normalize powers if any exceeds 1.0
+        double max = Math.max(
+                1.0,
+                Math.max(
+                        Math.abs(frontLeftPower),
+                        Math.max(Math.abs(frontRightPower),
+                                Math.max(Math.abs(rearLeftPower), Math.abs(rearRightPower)))
+                )
+        );
+
+        frontLeftPower /= max;
+        frontRightPower /= max;
+        rearLeftPower /= max;
+        rearRightPower /= max;
+
+        // Send power to motors
         frontLeft.setPower(frontLeftPower);
-        rearLeft.setPower(rearLeftPower);
         frontRight.setPower(frontRightPower);
+        rearLeft.setPower(rearLeftPower);
         rearRight.setPower(rearRightPower);
+    }
 
-    } // drive
 
     public void resetAngle() {
         lastAngles = imu.getRobotYawPitchRollAngles().getYaw();
-
+        imu.resetYaw();
         direction = 0;
     }
 
@@ -93,20 +99,37 @@ public class DriveTrain extends SubsystemBase{
         // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
         // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
 
-        double angles = imu.getRobotYawPitchRollAngles().getYaw();
+         direction = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
-        double deltaAngle = angles - lastAngles;
-
-        if (deltaAngle < -180)
-            deltaAngle += 360;
-        else if (deltaAngle > 180)
-            deltaAngle -= 360;
-
-        direction += deltaAngle;
-
-        lastAngles = angles;
+//        double deltaAngle = angles - lastAngles;
+//
+//        if (deltaAngle < -180)
+//            deltaAngle += 360;
+//        else if (deltaAngle > 180)
+//            deltaAngle -= 360;
+//
+//        direction += deltaAngle;
+//
+//        lastAngles = angles;
 
         return direction;
     }
+
+    public void setFrontLeftPower(double power) {
+        frontLeft.setPower(power);
+    }
+
+    public void setFrontRightPower(double power) {
+        frontRight.setPower(power);
+    }
+
+    public void setRearLeftPower(double power) {
+        rearLeft.setPower(power);
+    }
+
+    public void setRearRightPower(double power) {
+        rearRight.setPower(power);
+    }
+
 
 } // DriveTrain
