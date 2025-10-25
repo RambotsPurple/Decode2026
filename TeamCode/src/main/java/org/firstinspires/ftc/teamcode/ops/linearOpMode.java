@@ -86,7 +86,10 @@ public class linearOpMode extends LinearOpMode {
                     isShooterOn = !isShooterOn;
 
 //                    if (isShooterOn) shooter.setPower(shooter.setVelocityPID(velocity));
-                    if (isShooterOn) shooter.setVelocityPID(velocity);
+                    if (isShooterOn) {
+//                        shooter.setVelocityPID(velocity)
+                        shooter.setPower(1); // temp for scrimmage
+                    }
 
                     else shooter.setPower(0);
                 } // if

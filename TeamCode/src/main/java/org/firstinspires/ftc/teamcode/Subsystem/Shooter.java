@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class Shooter extends SubsystemBase{
 
     // TODO check motorex vs motor
-    private DcMotorEx shooter;
+    private DcMotorEx shooter1, shooter2;
     // make ramp motor or servo
     private Servo  launcher;
 
@@ -27,46 +27,47 @@ public class Shooter extends SubsystemBase{
     private int lastPos = 0;
 
     public Shooter(HardwareMap hw) {
-        shooter = hw.get(DcMotorEx.class, "lShoot");
-        shooter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //run without so we can utilize 100% of it's power
-        shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        shooter1 = hw.get(DcMotorEx.class, "lShoot");
+        shooter1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        shooter2 = hw.get(DcMotorEx.class, "rShoot");        //run without so we can utilize 100% of it's power
         // Orientation for shooter
-        shooter.setDirection(DcMotor.Direction.REVERSE);
+        shooter1.setDirection(DcMotor.Direction.REVERSE);
+//        shooter2.setDirection(DcMotor.Direction.REVERSE);
 
         launcher = hw.get(Servo.class,"launcher");
         launcher.setDirection(Servo.Direction.REVERSE);
     } // init
 
     public void setPower(double p) {
-        shooter.setPower(p);
+        shooter1.setPower(p);
+        shooter2.setPower(p);
     } // shoot
 
 
 
     // set RPM of motor
     public void setRPM(int RPM) {
-        shooter.setVelocity(RPM * 6, AngleUnit.DEGREES);
+        shooter1.setVelocity(RPM * 6, AngleUnit.DEGREES);
     }
 
     public double getRPM() {
-        return shooter.getVelocity(AngleUnit.DEGREES) / 6;
+        return shooter1.getVelocity(AngleUnit.DEGREES) / 6;
     }
 
     public double getTPS() {
-        return shooter.getVelocity();
+        return shooter1.getVelocity();
     }
 
     public void setTargetPosition(int position) {
-        shooter.setTargetPosition(position);
+        shooter1.setTargetPosition(position);
     }
 
     public int getTargetPosition() {
-        return shooter.getTargetPosition();
+        return shooter1.getTargetPosition();
     }
 
     public int getCurrentPosition() {
-        return shooter.getCurrentPosition();
+        return shooter1.getCurrentPosition();
     }
 
     // get RPM by comparing current encoder position to last encoder position
@@ -83,7 +84,7 @@ public class Shooter extends SubsystemBase{
         int PPR = 28; // pulses per revolution
         double targetTicksPerSec = (targetRpm * PPR) / 60.0;
 
-        double currentVelocity = shooter.getVelocity(); // in ticks/sec
+        double currentVelocity = shooter1.getVelocity(); // in ticks/sec
         double error = targetTicksPerSec - currentVelocity;
         double deltaTime = timer.seconds();
 
@@ -98,7 +99,7 @@ public class Shooter extends SubsystemBase{
         out = Math.max(-1, Math.min(1, out));
 
         // apply power
-        shooter.setPower(out);
+        shooter1.setPower(out);
 
         // prepare for next cycle
         lastError = error;
