@@ -28,11 +28,11 @@ public class Shooter extends SubsystemBase{
 
     public Shooter(HardwareMap hw) {
         shooter1 = hw.get(DcMotorEx.class, "lShoot");
-        shooter1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        shooter1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         shooter2 = hw.get(DcMotorEx.class, "rShoot");        //run without so we can utilize 100% of it's power
         // Orientation for shooter
         shooter1.setDirection(DcMotor.Direction.REVERSE);
-//        shooter2.setDirection(DcMotor.Direction.REVERSE);
+        shooter2.setDirection(DcMotor.Direction.REVERSE);
 
         launcher = hw.get(Servo.class,"launcher");
         launcher.setDirection(Servo.Direction.REVERSE);

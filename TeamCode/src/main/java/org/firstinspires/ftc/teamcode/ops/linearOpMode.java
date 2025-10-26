@@ -76,11 +76,11 @@ public class linearOpMode extends LinearOpMode {
             driveTrain.drive(-gamepad1.left_stick_x*1.1, gamepad1.left_stick_y, gamepad1.right_stick_x, direction);
 
 
-            // shooter
-//            shooter.setTargetPosition(20000);
-
-            // toggle fo
-            // r shooter power on gamepad2.a
+//            // shooter
+////            shooter.setTargetPosition(20000);
+//
+//            // toggle fo
+//            // r shooter power on gamepad2.a
             if (gamepad2.a != prevAStatus) {
                 if (!gamepad2.a) {
                     isShooterOn = !isShooterOn;
@@ -96,9 +96,15 @@ public class linearOpMode extends LinearOpMode {
                 prevAStatus = gamepad2.a;
             } // if
 
+//            if(gamepad2.right_bumper){
+//                shooter.setPower(.2  );
+//            }if(gamepad2.left_bumper){
+//                shooter.setPower(0);
+//            }
+
             // toggle for intake power on gamepad2.b
-            if (gamepad2.b != prevBStatus) {
-                if (!gamepad2.b) {
+            if (gamepad1.b != prevBStatus) {
+                if (!gamepad1.b) {
                     isIntakeOn = !isIntakeOn;
 
                     if (isIntakeOn){
@@ -110,7 +116,7 @@ public class linearOpMode extends LinearOpMode {
                         intake.setPower(0);
                     }
                 } // if
-                prevBStatus = gamepad2.b;
+                prevBStatus = gamepad1.b;
             } // if
 
             if (gamepad2.x != prevXStatus) {

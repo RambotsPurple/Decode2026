@@ -16,6 +16,7 @@ public class DriveTrain extends SubsystemBase{
     private IMU imu;
     private double direction;
     private double lastAngles;
+    private double angles;
 
 
 
@@ -48,13 +49,13 @@ public class DriveTrain extends SubsystemBase{
         resetAngle();
     } // init
 
-    public void drive(double x, double y, double turn, double heading) {
-
+    public void drive(double x, double y, double turn, double headingDeg) {
+        double heading = Math.toRadians(headingDeg);
 
 
         // Corrected field-centric math (if you use IMU)
-        double rotatedX = x * Math.cos(heading) - y * Math.sin(heading);
-        double rotatedY = x * Math.sin(heading) + y * Math.cos(heading);
+        double rotatedX = x * Math.cos(-heading) - y * Math.sin(-heading);
+        double rotatedY = x * Math.sin(-heading) + y * Math.cos(-heading);
 
         // Calculate raw motor powers
         double frontLeftPower = rotatedY + rotatedX + turn;
@@ -99,18 +100,19 @@ public class DriveTrain extends SubsystemBase{
         // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
         // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
 
-         direction = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+         direction = imu.getRobotYawPitchRollAngles().getYaw();
 
-//        double deltaAngle = angles - lastAngles;
-//
-//        if (deltaAngle < -180)
-//            deltaAngle += 360;
-//        else if (deltaAngle > 180)
-//            deltaAngle -= 360;
-//
-//        direction += deltaAngle;
-//
-//        lastAngles = angles;
+
+        double deltaAngle = angles - lastAngles;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        direction += deltaAngle;
+
+        lastAngles = angles;
 
         return direction;
     }
