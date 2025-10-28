@@ -104,11 +104,13 @@ public class Shooter extends SubsystemBase{
         // prepare for next cycle
         lastError = error;
         timer.reset();
-    }//end of setVelocityPID
+    } // end of setVelocityPID
 
     public void servoUp(){
         launcher.setPosition(1.0);
-    }public void servoDown(){
+    }
+
+    public void servoDown(){
         launcher.setPosition(0.0);
     }
 

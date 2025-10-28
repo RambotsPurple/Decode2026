@@ -168,7 +168,7 @@ public class linearOpMode extends LinearOpMode {
                     "            Right JoyStick = Rotation of drive train\n" +
                     "            right bumper turn on auto correction");
             telemetry.addData("Y", presYStatus);
-telemetry.addData("Status", isLauncherOn);
+            telemetry.addData("Status", isLauncherOn);
 
             telemetry.update();
 
